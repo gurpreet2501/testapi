@@ -20,7 +20,8 @@ use Illuminate\Http\Response;
 
 
 Route::post('v2/{obj}/{api}', function (Request $request, $obj, $api) {
-
+  
+   $pag_no = isset($request->data['page']) ? $request->data['page'] : 1;
    
    $class = 'App\\REST\\'.ucfirst($obj).'\\'.ucfirst($api);
 
@@ -34,7 +35,8 @@ Route::post('v2/{obj}/{api}', function (Request $request, $obj, $api) {
    	
    $page_no = isset($request->data['page']) ? $request->data['page'] : '';
    
-   $result =  $t->regular();	
+   $result =  $t->regular($pag_no);	
+
    echo "<pre>";
    print_r($result);
    exit;

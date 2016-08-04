@@ -6,11 +6,11 @@ use Illuminate\Pagination\Paginator;
 
 Class All{
 	
-	public function regular(){
+	public function regular($page = null){
 		
-		// Paginator::currentPageResolver(function() use ($page) {
-		//     return $page;
-		// });
+		Paginator::currentPageResolver(function() use ($page) {
+		    return $page;
+		});
 
 		return M\Dggsjm_posts::paginate(15);
 
