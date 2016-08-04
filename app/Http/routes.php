@@ -21,7 +21,7 @@ use Illuminate\Http\Response;
 
 Route::post('v2/{obj}/{api}', function (Request $request, $obj, $api) {
 
-
+   
    $class = 'App\\REST\\'.ucfirst($obj).'\\'.ucfirst($api);
 
    if(!class_exists($class))
