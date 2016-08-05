@@ -1,4 +1,5 @@
 <?php
+use App\Factory\Response as Resp;
 use App\Models\Dggsjm_posts;
 use App\Models\Dggsjm_categories;
 use Illuminate\Http\Request;
@@ -20,26 +21,27 @@ use Illuminate\Http\Response;
 
 
 Route::post('v2/{obj}/{api}', function (Request $request, $obj, $api) {
-  
+
    $pag_no = isset($request->data['page']) ? $request->data['page'] : 1;
    
    $class = 'App\\REST\\'.ucfirst($obj).'\\'.ucfirst($api);
 
    if(!class_exists($class))
-   	 return response()->json(['Status' => 'Failure']);
+       return Resp::errors(0);
    
    $t = new $class();
    
    if(!method_exists($t, 'regular'))
-   	 return response()->json(['Status' => 'Failure']);
+   	 return Resp::errors(0);
+   	 
    	
-   $page_no = isset($request->data['page']) ? $request->data['page'] : '';
+   // $page_no = isset($request->data['page']) ? $request->data['page'] : '';
    
-   $result =  $t->regular($pag_no);	
+   $result =  $t->regular($request);
 
-   echo "<pre>";
-   print_r($result);
-   exit;
-   exit;	
-   
+   if($result['STATUS'] == 'SUCCESS')
+      return Resp::success(response()->json($result));
+   else
+      return Resp::errors(response()->json($result));
+
 });
